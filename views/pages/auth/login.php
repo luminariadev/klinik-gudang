@@ -120,14 +120,16 @@
 <body class="bg-surface font-body-md text-on-surface min-h-screen flex flex-col antialiased">
 <div class="grain-texture"></div>
 
-<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-5 md:py-6 bg-transparent">
-  <div class="flex items-center gap-2 md:gap-3 group cursor-pointer">
-    <div class="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center transition-all group-hover:rotate-6 group-hover:scale-105">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2bgG_PN81oSAve8ujm_8w_VCgDjnhLIZjsxbKoVyxbr82quoehGW_mjTfvI3DY2xReMVnEvFy9e4pg2C9n3oYgt85Xa2ZTB6Nz3q_vCmcIsPtgdJviwP45xkBVAuQ7zYVaHHNy_2ER96SOGsvEdo0F7YEo-yBXpWVc--Qz43Q5fEHl8UVEgB0tvgVdbbmMN3dpzTuRCmnyJOer-GdWPgrnw7DqU0r5xPPyjUHFQMf4-axqeeb_aBMbOCEeCx6rXDkBEStRfizvEuJ" alt="UIN Logo" class="w-full h-full object-contain">
-    </div>
-    <div class="flex flex-col gap-1 leading-none">
-      <span class="font-display-lg text-[18px] md:text-[22px] text-primary tracking-tight font-extrabold">Klinik UIN Bandung</span>
-      <span class="text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-secondary/60 font-bold">Medical Inventory</span>
+<header class="fixed top-0 left-0 w-full z-50 flex justify-center py-6 md:py-8 bg-transparent">
+  <div class="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 flex justify-between items-center">
+    <div class="flex items-center gap-2 md:gap-3 group cursor-pointer">
+      <div class="w-9 h-9 md:w-11 md:h-11 flex items-center justify-center transition-all group-hover:rotate-6 group-hover:scale-105">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2bgG_PN81oSAve8ujm_8w_VCgDjnhLIZjsxbKoVyxbr82quoehGW_mjTfvI3DY2xReMVnEvFy9e4pg2C9n3oYgt85Xa2ZTB6Nz3q_vCmcIsPtgdJviwP45xkBVAuQ7zYVaHHNy_2ER96SOGsvEdo0F7YEo-yBXpWVc--Qz43Q5fEHl8UVEgB0tvgVdbbmMN3dpzTuRCmnyJOer-GdWPgrnw7DqU0r5xPPyjUHFQMf4-axqeeb_aBMbOCEeCx6rXDkBEStRfizvEuJ" alt="UIN Logo" class="w-full h-full object-contain">
+      </div>
+      <div class="flex flex-col gap-1 leading-none">
+        <span class="font-display-lg text-[18px] md:text-[22px] text-primary tracking-tight font-extrabold">Klinik UIN Bandung</span>
+        <span class="text-[9px] md:text-[10px] uppercase tracking-[0.25em] text-secondary/60 font-bold">Medical Inventory</span>
+      </div>
     </div>
   </div>
 
@@ -138,7 +140,7 @@
   <div class="absolute bottom-[-10%] left-[-5%] w-[280px] h-[280px] md:w-[500px] md:h-[500px] bg-primary-fixed/15 rounded-full blur-[80px] md:blur-[120px] floating-shape" style="animation-delay:-3s;"></div>
   <div class="absolute inset-0 bg-pattern opacity-100 pointer-events-none"></div>
 
-  <div class="container mx-auto px-margin-mobile md:px-margin-desktop grid lg:grid-cols-12 gap-xl items-center relative z-10">
+  <div class="w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-10">
 
     <!-- Sisi kiri: hanya tampil di layar besar -->
     <div class="hidden lg:flex lg:col-span-6 flex-col gap-12">
@@ -171,9 +173,8 @@
       </div>
     </div>
 
-    <!-- Sisi kanan: Form Login -->
     <div class="lg:col-span-6 flex flex-col items-center lg:items-end w-full">
-      <div class="login-card w-full max-w-[480px] glass-morphism p-6 sm:p-8 md:p-12 rounded-[32px] sm:rounded-[48px] border border-white/80 shadow-organic-xl relative">
+      <div class="login-card w-full max-w-[440px] glass-morphism p-6 sm:p-8 md:p-12 rounded-[32px] sm:rounded-[48px] border border-white/80 shadow-organic-xl relative">
         <div class="flex flex-col gap-6 md:gap-8">
           <div>
             <h2 class="font-display-lg text-[26px] sm:text-[32px] text-primary mb-2 tracking-tight">System Login</h2>
