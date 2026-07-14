@@ -1,0 +1,9 @@
+/vendor/
+/.env
+/.vscode/
+/.idea/
+/.DS_Store
+*.log
+config/database.php
+check.php
+test_*.php

@@ -235,16 +235,22 @@ $initial  = strtoupper(substr($fullName, 0, 1));
         <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl <?= strpos($_SERVER['REQUEST_URI'], '/super-admin/barang') !== false ? 'text-primary bg-white font-bold shadow-card' : 'text-white/80 hover:text-white hover:bg-white/10 font-medium' ?> transition-all duration-200" href="<?= BASE_URL ?>/super-admin/barang" title="Master Barang">
             <span class="material-symbols-outlined text-[20px] shrink-0">inventory_2</span><span class="sidebar-label text-[14px] whitespace-nowrap">Master Barang</span>
         </a>
+        <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl <?= strpos($_SERVER['REQUEST_URI'], '/super-admin/laporan-inventaris') !== false ? 'text-primary bg-white font-bold shadow-card' : 'text-white/80 hover:text-white hover:bg-white/10 font-medium' ?> transition-all duration-200" href="<?= BASE_URL ?>/super-admin/laporan-inventaris" title="Laporan Inventaris">
+            <span class="material-symbols-outlined text-[20px] shrink-0">assignment</span><span class="sidebar-label text-[14px] whitespace-nowrap">Laporan Inventaris</span>
+        </a>
         <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl <?= strpos($_SERVER['REQUEST_URI'], '/super-admin/laporan-penggunaan') !== false ? 'text-primary bg-white font-bold shadow-card' : 'text-white/80 hover:text-white hover:bg-white/10 font-medium' ?> transition-all duration-200" href="<?= BASE_URL ?>/super-admin/laporan-penggunaan" title="Laporan Penggunaan">
-            <span class="material-symbols-outlined text-[20px] shrink-0">summarize</span><span class="sidebar-label text-[14px] whitespace-nowrap">Laporan Penggunaan</span>
+            <span class="material-symbols-outlined text-[20px] shrink-0">analytics</span><span class="sidebar-label text-[14px] whitespace-nowrap">Laporan Penggunaan</span>
         </a>
 
     <?php elseif ($user['role'] === 'admin_poli'): ?>
         <p class="px-md text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1 sidebar-label">Menu Utama</p>
-        <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl <?= strpos($_SERVER['REQUEST_URI'], '/items/create') === false && strpos($_SERVER['REQUEST_URI'], '/laporan') === false ? 'text-primary bg-white font-bold shadow-card' : 'text-white/80 hover:text-white hover:bg-white/10 font-medium' ?> transition-all duration-200" href="<?= BASE_URL ?>/dashboard" title="Dashboard Poli">
+        <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl <?= $_SERVER['REQUEST_URI'] == BASE_URL . '/dashboard' ? 'text-primary bg-white font-bold shadow-card' : 'text-white/80 hover:text-white hover:bg-white/10 font-medium' ?> transition-all duration-200" href="<?= BASE_URL ?>/dashboard" title="Dashboard Poli">
             <span class="material-symbols-outlined text-[20px] shrink-0">dashboard</span><span class="sidebar-label text-[14px] whitespace-nowrap">Dashboard</span>
         </a>
         <p class="px-md text-[10px] font-bold text-white/50 uppercase tracking-widest mt-lg mb-1 sidebar-label">Manajemen Barang</p>
+        <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl <?= strpos($_SERVER['REQUEST_URI'], '/items') !== false && strpos($_SERVER['REQUEST_URI'], '/items/create') === false ? 'text-primary bg-white font-bold shadow-card' : 'text-white/80 hover:text-white hover:bg-white/10 font-medium' ?> transition-all duration-200" href="<?= BASE_URL ?>/items" title="Master Barang">
+            <span class="material-symbols-outlined text-[20px] shrink-0">inventory_2</span><span class="sidebar-label text-[14px] whitespace-nowrap">Master Barang</span>
+        </a>
         <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl <?= strpos($_SERVER['REQUEST_URI'], '/items/create') !== false ? 'text-primary bg-white font-bold shadow-card' : 'text-white/80 hover:text-white hover:bg-white/10 font-medium' ?> transition-all duration-200" href="<?= BASE_URL ?>/items/create" title="Input Barang Baru">
             <span class="material-symbols-outlined text-[20px] shrink-0">add_circle</span><span class="sidebar-label text-[14px] whitespace-nowrap">Input Barang Baru</span>
         </a>
@@ -255,8 +261,15 @@ $initial  = strtoupper(substr($fullName, 0, 1));
 
     <?php else: // Perawat ?>
         <p class="px-md text-[10px] font-bold text-white/50 uppercase tracking-widest mb-1 sidebar-label">Menu Utama</p>
-        <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl text-primary bg-white font-bold shadow-card transition-all duration-200" href="<?= BASE_URL ?>/dashboard" title="Dashboard">
+        <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl <?= $_SERVER['REQUEST_URI'] == BASE_URL . '/dashboard' ? 'text-primary bg-white font-bold shadow-card' : 'text-white/80 hover:text-white hover:bg-white/10 font-medium' ?> transition-all duration-200" href="<?= BASE_URL ?>/dashboard" title="Dashboard">
             <span class="material-symbols-outlined text-[20px] shrink-0">dashboard</span><span class="sidebar-label text-[14px] whitespace-nowrap">Dashboard</span>
+        </a>
+        <p class="px-md text-[10px] font-bold text-white/50 uppercase tracking-widest mt-lg mb-1 sidebar-label">Inventaris</p>
+        <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl <?= strpos($_SERVER['REQUEST_URI'], '/perawat/barang') !== false ? 'text-primary bg-white font-bold shadow-card' : 'text-white/80 hover:text-white hover:bg-white/10 font-medium' ?> transition-all duration-200" href="<?= BASE_URL ?>/perawat/barang" title="Data Barang">
+            <span class="material-symbols-outlined text-[20px] shrink-0">inventory_2</span><span class="sidebar-label text-[14px] whitespace-nowrap">Data Barang</span>
+        </a>
+        <a class="nav-link ripple-container relative overflow-hidden flex items-center gap-md py-2.5 px-md rounded-xl <?= strpos($_SERVER['REQUEST_URI'], '/perawat/ambil') !== false ? 'text-primary bg-white font-bold shadow-card' : 'text-white/80 hover:text-white hover:bg-white/10 font-medium' ?> transition-all duration-200" href="<?= BASE_URL ?>/perawat/ambil" title="Pengambilan Barang">
+            <span class="material-symbols-outlined text-[20px] shrink-0">output</span><span class="sidebar-label text-[14px] whitespace-nowrap">Pengambilan Barang</span>
         </a>
     <?php endif; ?>
   </nav>

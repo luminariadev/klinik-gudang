@@ -86,6 +86,11 @@
                   <span class="material-symbols-outlined text-[16px]">remove</span>
                   <?= (int)$log['jumlah'] ?> <?= htmlspecialchars($log['satuan']) ?>
                 </span>
+                <?php if (!empty($log['keterangan'])): ?>
+                  <p class="text-[11px] text-outline mt-1 max-w-[150px] truncate" title="<?= htmlspecialchars($log['keterangan']) ?>">
+                    <?= htmlspecialchars($log['keterangan']) ?>
+                  </p>
+                <?php endif; ?>
               </td>
             </tr>
           <?php endforeach; ?>

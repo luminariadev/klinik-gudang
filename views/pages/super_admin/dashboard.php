@@ -14,12 +14,12 @@
   </div>
 </div>
 
-<!-- Stat cards gabungan -->
-<div class="grid grid-cols-2 lg:grid-cols-4 gap-md mb-8">
+<!-- Stat cards baris 1 (Utama) -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-md mb-md">
   <div class="stat-card animate-card bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant/60 shadow-card" style="animation-delay:.02s">
     <div class="flex items-center justify-between mb-md relative z-10">
       <span class="icon-badge material-symbols-outlined text-white p-2.5 rounded-xl text-[20px] shadow-sm" style="background:linear-gradient(135deg,#0f5238,#2d6a4f); animation-delay:.15s">inventory_2</span>
-      <span class="text-[10px] font-bold uppercase tracking-wider text-outline bg-surface-container px-2 py-1 rounded-full">Gabungan</span>
+      <span class="text-[10px] font-bold uppercase tracking-wider text-outline bg-surface-container px-2 py-1 rounded-full">Global</span>
     </div>
     <div class="text-[28px] font-display font-bold text-on-surface count-up relative z-10"><?= number_format($stats['total_items'], 0, ',', '.') ?></div>
     <div class="text-[12px] text-outline font-medium mt-1 relative z-10">Total Item Terdaftar</div>
@@ -32,17 +32,12 @@
     <div class="text-[28px] font-display font-bold text-on-surface count-up relative z-10"><?= number_format($stats['total_polis'], 0, ',', '.') ?></div>
     <div class="text-[12px] text-outline font-medium mt-1 relative z-10">Poli Terdaftar</div>
   </div>
-  <div class="stat-card animate-card bg-surface-container-lowest p-lg rounded-2xl border <?= $stats['low_stock'] > 0 ? 'border-error/30' : 'border-outline-variant/60' ?> shadow-card" style="animation-delay:.14s">
+  <div class="stat-card animate-card bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant/60 shadow-card" style="animation-delay:.14s">
     <div class="flex items-center justify-between mb-md relative z-10">
-      <span class="icon-badge material-symbols-outlined text-white p-2.5 rounded-xl text-[20px] shadow-sm <?= $stats['low_stock'] > 0 ? '' : 'opacity-80' ?>" style="background:linear-gradient(135deg,#ba1a1a,#e6534d); animation-delay:.25s">warning</span>
-      <?php if ($stats['low_stock'] > 0): ?>
-        <span class="text-[10px] font-bold uppercase tracking-wider text-error bg-error-container/60 px-2 py-1 rounded-full animate-pulse">Perlu perhatian</span>
-      <?php else: ?>
-        <span class="text-[10px] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-1 rounded-full">Aman</span>
-      <?php endif; ?>
+      <span class="icon-badge material-symbols-outlined text-white p-2.5 rounded-xl text-[20px] shadow-sm" style="background:linear-gradient(135deg,#0f5238,#2d6a4f); animation-delay:.25s">category</span>
     </div>
-    <div class="text-[28px] font-display font-bold <?= $stats['low_stock'] > 0 ? 'text-error' : 'text-on-surface' ?> count-up relative z-10"><?= number_format($stats['low_stock'], 0, ',', '.') ?></div>
-    <div class="text-[12px] text-outline font-medium mt-1 relative z-10">Barang Stok Rendah</div>
+    <div class="text-[28px] font-display font-bold text-on-surface count-up relative z-10"><?= number_format($stats['total_kategori'], 0, ',', '.') ?></div>
+    <div class="text-[12px] text-outline font-medium mt-1 relative z-10">Kategori Master</div>
   </div>
   <div class="stat-card animate-card bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant/60 shadow-card" style="animation-delay:.20s">
     <div class="flex items-center justify-between mb-md relative z-10">
@@ -51,6 +46,26 @@
     </div>
     <div class="text-[28px] font-display font-bold text-on-surface count-up relative z-10"><?= number_format($stats['total_users'], 0, ',', '.') ?></div>
     <div class="text-[12px] text-outline font-medium mt-1 relative z-10">Total Admin & Perawat</div>
+  </div>
+</div>
+
+<!-- Stat cards baris 2 (Peringatan & Aktivitas) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-md mb-8">
+  <div class="stat-card animate-card bg-surface-container-lowest p-lg rounded-2xl border <?= $stats['low_stock'] > 0 ? 'border-error/30 bg-error-container/10' : 'border-outline-variant/60' ?> shadow-card flex items-center gap-lg" style="animation-delay:.26s">
+    <span class="icon-badge material-symbols-outlined text-white p-4 rounded-xl text-[28px] shadow-sm <?= $stats['low_stock'] > 0 ? '' : 'opacity-80' ?>" style="background:linear-gradient(135deg,#ba1a1a,#e6534d);">warning</span>
+    <div>
+      <div class="text-[28px] font-display font-bold <?= $stats['low_stock'] > 0 ? 'text-error' : 'text-on-surface' ?> count-up relative z-10 leading-none"><?= number_format($stats['low_stock'], 0, ',', '.') ?></div>
+      <div class="text-[13px] text-outline font-bold uppercase tracking-wide mt-1 relative z-10">Barang Stok Rendah</div>
+      <p class="text-[11px] text-outline mt-1">Sistem memerlukan perhatian pengadaan barang.</p>
+    </div>
+  </div>
+  <div class="stat-card animate-card bg-surface-container-lowest p-lg rounded-2xl border border-outline-variant/60 shadow-card flex items-center gap-lg" style="animation-delay:.32s">
+    <span class="icon-badge material-symbols-outlined text-white p-4 rounded-xl text-[28px] shadow-sm" style="background:linear-gradient(135deg,#2e3131,#707973);">analytics</span>
+    <div>
+      <div class="text-[28px] font-display font-bold text-on-surface count-up relative z-10 leading-none"><?= number_format($stats['usage_this_month'], 0, ',', '.') ?> <span class="text-[14px] text-outline font-medium">unit</span></div>
+      <div class="text-[13px] text-outline font-bold uppercase tracking-wide mt-1 relative z-10">Pemakaian Bulan Ini</div>
+      <p class="text-[11px] text-outline mt-1">Total barang yang dipakai seluruh poli bulan ini.</p>
+    </div>
   </div>
 </div>
 
@@ -93,4 +108,41 @@
       <p class="text-[13px] text-outline">Belum ada poli terdaftar. <a href="<?= BASE_URL ?>/super-admin/polis" class="text-primary font-bold hover:underline">Kelola Poli</a></p>
     </div>
   <?php endif; ?>
+</div>
+
+<!-- Aktivitas Terbaru -->
+<div class="mb-md">
+  <span class="text-[11px] font-bold uppercase tracking-widest text-outline">Log Aktivitas Sistem (5 Terakhir)</span>
+</div>
+<div class="animate-card bg-surface-container-lowest rounded-2xl border border-outline-variant/60 shadow-card overflow-hidden mb-lg" style="animation-delay:.4s">
+  <div class="overflow-x-auto">
+    <table class="w-full text-left border-collapse min-w-[600px]">
+      <tbody class="divide-y divide-outline-variant/30">
+        <?php if(empty($recentActivities)): ?>
+          <tr><td class="text-center py-xl text-outline-variant">Belum ada aktivitas terekam.</td></tr>
+        <?php else: ?>
+          <?php foreach ($recentActivities as $act): ?>
+            <tr class="hover:bg-surface-variant/20 transition-colors">
+              <td class="py-3 px-lg w-48">
+                <p class="text-[13px] font-bold text-on-surface"><?= date('d M Y', strtotime($act['created_at'])) ?></p>
+                <p class="text-[11px] text-outline"><?= date('H:i:s', strtotime($act['created_at'])) ?> WIB</p>
+              </td>
+              <td class="py-3 px-md">
+                <span class="px-2 py-1 bg-surface-variant text-on-surface-variant rounded text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">
+                  <?= htmlspecialchars($act['action']) ?>
+                </span>
+              </td>
+              <td class="py-3 px-md w-1/2">
+                <p class="text-[13px] text-on-surface"><?= htmlspecialchars($act['description'] ?? '-') ?></p>
+              </td>
+              <td class="py-3 px-lg text-right">
+                <p class="text-[13px] font-bold text-primary"><?= htmlspecialchars($act['full_name'] ?? 'Sistem') ?></p>
+                <p class="text-[10px] text-outline uppercase tracking-wider"><?= htmlspecialchars(str_replace('_', ' ', $act['role'] ?? '')) ?></p>
+              </td>
+            </tr>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </tbody>
+    </table>
+  </div>
 </div>

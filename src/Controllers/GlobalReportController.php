@@ -44,6 +44,7 @@ class GlobalReportController {
                 ul.jumlah, 
                 ul.created_at, 
                 ul.catatan,
+                ul.keterangan,
                 i.nama AS item_nama,
                 i.sku,
                 i.kategori,

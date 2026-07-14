@@ -273,6 +273,10 @@ function kategoriIcon(string $kategori): string {
         <label class="block text-[12px] font-bold text-outline uppercase tracking-wide mb-1">Jumlah Pemakaian</label>
         <input type="number" name="jumlah_pakai" id="use-jumlah" min="1" required class="w-full px-md py-2.5 bg-surface border border-outline-variant rounded-xl text-[14px] focus:ring-2 focus:ring-secondary/25 focus:border-secondary outline-none transition-all">
       </div>
+      <div>
+        <label class="block text-[12px] font-bold text-outline uppercase tracking-wide mb-1">Keterangan / Tujuan</label>
+        <input type="text" name="keterangan" id="use-keterangan" required placeholder="Contoh: Pasien poli gigi, dll." class="w-full px-md py-2.5 bg-surface border border-outline-variant rounded-xl text-[14px] focus:ring-2 focus:ring-secondary/25 focus:border-secondary outline-none transition-all">
+      </div>
     </div>
     <div class="flex gap-sm mt-lg">
       <button type="button" onclick="closeModal('modal-use')" class="flex-1 py-2.5 rounded-xl border border-outline-variant font-bold text-[14px] text-on-surface-variant hover:bg-surface-variant/40 transition-colors">Batal</button>

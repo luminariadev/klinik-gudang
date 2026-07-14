@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Helpers\Auth;
 use App\Helpers\View;
+use App\Helpers\ActivityLogger;
 use App\Middleware\AuthMiddleware;
 
 class AuthController {
@@ -52,6 +53,11 @@ class AuthController {
             // Set session login dan token remember me jika dicentang
             Auth::login($user, $remember);
             
+            $_SESSION['user_role'] = $user['role'];
+            $_SESSION['user_poli_id'] = $user['poli_id'];
+            
+            ActivityLogger::log($user['id'], 'login', 'User logged in');
+
             // Redirect sesuai dengan role pengguna
             if ($user['role'] === 'super_admin') {
                 header("Location: " . BASE_URL . "/super-admin");

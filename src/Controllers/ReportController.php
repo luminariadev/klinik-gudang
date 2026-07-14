@@ -107,7 +107,7 @@ class ReportController {
             header('Content-Disposition: attachment; filename="laporan-inventaris-poli-' . date('Y-m-d') . '.csv"');
             $out = fopen('php://output', 'w');
             fputs($out, "\xEF\xBB\xBF");
-            fputcsv($out, ['Nama Barang', 'SKU', 'Kategori', 'Stok', 'Satuan', 'Status', 'Tanggal Dicatat']);
+            fputcsv($out, ['Nama Barang', 'SKU', 'Kategori', 'Stok', 'Satuan', 'Status', 'Tanggal Dicatat'], ',', '"', "\\");
             foreach ($items as $item) {
                 fputcsv($out, [
                     $item['nama'],
@@ -117,7 +117,7 @@ class ReportController {
                     $item['satuan'],
                     $item['status'] === 'low' ? 'Stok Rendah' : 'Tersedia',
                     !empty($item['created_at']) ? date('Y-m-d', strtotime($item['created_at'])) : '',
-                ]);
+                ], ',', '"', "\\");
             }
             fclose($out);
             exit;
@@ -328,7 +328,14 @@ class ReportController {
         <?php
         $html = ob_get_clean();
 
-        require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
+        $autoloadPath = dirname(__DIR__, 2) . '/vendor/autoload.php';
+        if (!file_exists($autoloadPath)) {
+            echo "<script>alert('Peringatan: Library DomPDF belum diinstal. Menampilkan laporan dalam format cetak standar. Silakan gunakan fitur Print browser (Ctrl+P) lalu simpan sebagai PDF.'); window.print();</script>";
+            echo $html;
+            exit;
+        }
+
+        require_once $autoloadPath;
         $options = new \Dompdf\Options();
         $options->set('isHtml5ParserEnabled', true);
         $options->set('isRemoteEnabled', false);

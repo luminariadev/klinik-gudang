@@ -118,6 +118,13 @@ switch ($uri) {
         $controller->index();
         break;
 
+    // Fitur Super Admin: Laporan Inventaris Global (Eksport)
+    case '/super-admin/laporan-inventaris':
+        require __DIR__ . '/src/Controllers/GlobalInventoryReportController.php';
+        $controller = new \App\Controllers\GlobalInventoryReportController();
+        $controller->index();
+        break;
+
     case '/super-admin/users':
         require __DIR__ . '/src/Controllers/MasterUserController.php';
         $controller = new \App\Controllers\MasterUserController();
@@ -148,11 +155,29 @@ switch ($uri) {
         $controller = new \App\Controllers\PoliController();
         $controller->dashboard();
         break;
-        
+
+    // Fitur Admin Poli: Master Barang & Input Barang
+    case '/items':
+        require __DIR__ . '/src/Controllers/ItemController.php';
+        $controller = new \App\Controllers\ItemController();
+        $controller->index();
+        break;
     case '/items/create':
         require __DIR__ . '/src/Controllers/ItemController.php';
         $controller = new \App\Controllers\ItemController();
         $controller->create();
+        break;
+    
+    // Fitur Perawat
+    case '/perawat/barang':
+        require __DIR__ . '/src/Controllers/PerawatController.php';
+        $controller = new \App\Controllers\PerawatController();
+        $controller->dataBarang();
+        break;
+    case '/perawat/ambil':
+        require __DIR__ . '/src/Controllers/PerawatController.php';
+        $controller = new \App\Controllers\PerawatController();
+        $controller->ambilBarang();
         break;
 
     case '/items/store':

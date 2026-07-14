@@ -19,6 +19,8 @@ class SuperAdminController {
             'total_users' => $pdo->query("SELECT COUNT(*) FROM users WHERE role != 'super_admin'")->fetchColumn(),
             'total_items' => $pdo->query("SELECT COUNT(*) FROM items")->fetchColumn(),
             'low_stock'   => $pdo->query("SELECT COUNT(*) FROM items WHERE status = 'low' OR stok <= ambang_minimum")->fetchColumn(),
+            'total_kategori' => $pdo->query("SELECT COUNT(*) FROM categories")->fetchColumn(),
+            'usage_this_month' => $pdo->query("SELECT COALESCE(SUM(jumlah), 0) FROM usage_logs WHERE MONTH(created_at) = MONTH(CURRENT_DATE()) AND YEAR(created_at) = YEAR(CURRENT_DATE())")->fetchColumn(),
         ];
 
         // Daftar Poli beserta jumlah stoknya
@@ -31,11 +33,21 @@ class SuperAdminController {
             GROUP BY p.id
         ")->fetchAll();
 
+        // Aktivitas Terbaru
+        $recentActivities = $pdo->query("
+            SELECT a.action, a.description, a.created_at, u.full_name, u.role
+            FROM activity_logs a
+            LEFT JOIN users u ON a.user_id = u.id
+            ORDER BY a.created_at DESC
+            LIMIT 5
+        ")->fetchAll();
+
         View::render('super_admin/dashboard', [
             'title' => 'Dashboard Super Admin',
             'active_menu' => 'dashboard',
             'stats' => $stats,
-            'polis' => $polis
+            'polis' => $polis,
+            'recentActivities' => $recentActivities
         ]);
     }
 

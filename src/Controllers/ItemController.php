@@ -15,6 +15,59 @@ class ItemController {
     }
 
     /**
+     * Menampilkan halaman Master Barang (Poli)
+     */
+    public function index() {
+        $user = Auth::user();
+        
+        // Hanya untuk admin poli (perawat punya halaman sendiri di /perawat/barang)
+        if ($user['role'] === 'super_admin') {
+            header("Location: " . BASE_URL . "/super-admin/barang");
+            exit;
+        }
+        if ($user['role'] === 'perawat') {
+            header("Location: " . BASE_URL . "/perawat/barang");
+            exit;
+        }
+
+        $pdo = getDbConnection();
+        $poli_id = $user['poli_id'];
+
+        $kategoriFilter = $_GET['kategori'] ?? '';
+        $search         = trim($_GET['search'] ?? '');
+
+        // Dropdown data
+        $kategoris = $pdo->query("SELECT nama FROM categories ORDER BY nama ASC")->fetchAll(PDO::FETCH_COLUMN);
+        
+        $where = ["poli_id = :poli_id"];
+        $params = [':poli_id' => $poli_id];
+
+        if ($kategoriFilter !== '') {
+            $where[] = "kategori = :kategori";
+            $params[':kategori'] = $kategoriFilter;
+        }
+        if ($search !== '') {
+            $where[] = "(nama LIKE :search OR sku LIKE :search)";
+            $params[':search'] = "%$search%";
+        }
+
+        $whereClause = implode(' AND ', $where);
+        
+        $stmt = $pdo->prepare("SELECT * FROM items WHERE $whereClause ORDER BY nama ASC");
+        $stmt->execute($params);
+        $items = $stmt->fetchAll();
+
+        View::render('poli/master_barang', [
+            'title' => 'Master Barang',
+            'user' => $user,
+            'items' => $items,
+            'kategoris' => $kategoris,
+            'kategoriFilter' => $kategoriFilter,
+            'search' => $search
+        ]);
+    }
+
+    /**
      * Menampilkan halaman Input Barang (Form Tambah Barang)
      */
     public function create() {
@@ -181,55 +234,68 @@ class ItemController {
         try {
             if ($action === 'update_item' && $user['role'] !== 'perawat') {
                 $id      = (int) ($_POST['id'] ?? 0);
+                $nama    = trim((string) ($_POST['nama'] ?? ''));
+                $sku     = trim((string) ($_POST['sku'] ?? ''));
+                $kategori= trim((string) ($_POST['kategori'] ?? ''));
                 $stok    = max(0, (int) ($_POST['stok'] ?? 0));
                 $ambang  = max(0, (int) ($_POST['ambang_minimum'] ?? 15));
+                $satuan  = trim((string) ($_POST['satuan'] ?? ''));
                 $catatan = trim((string) ($_POST['catatan'] ?? ''));
                 $status  = $stok <= $ambang ? 'low' : 'available';
 
-                $stmt = $pdo->prepare('UPDATE items SET stok = :stok, ambang_minimum = :ambang, status = :status, catatan = :catatan WHERE id = :id AND poli_id = :poli_id');
+                $stmt = $pdo->prepare('UPDATE items SET nama = :nama, sku = :sku, kategori = :kategori, stok = :stok, ambang_minimum = :ambang, satuan = :satuan, status = :status, catatan = :catatan WHERE id = :id AND poli_id = :poli_id');
                 $stmt->execute([
+                    ':nama'   => $nama,
+                    ':sku'    => $sku,
+                    ':kategori'=> $kategori,
                     ':stok'   => $stok,
                     ':ambang' => $ambang,
+                    ':satuan' => $satuan,
                     ':status' => $status,
                     ':catatan'=> $catatan !== '' ? $catatan : null,
                     ':id'     => $id,
                     ':poli_id'=> $poli_id
                 ]);
-                $flashMsg = 'Stok barang berhasil diperbarui.';
+                $flashMsg = 'Data barang berhasil diperbarui.';
 
             } elseif ($action === 'use_item') {
                 $id     = (int) ($_POST['id'] ?? 0);
                 $jumlah = max(0, (int) ($_POST['jumlah_pakai'] ?? 0));
+                $keterangan = trim((string) ($_POST['keterangan'] ?? ''));
 
-                $stmt = $pdo->prepare('SELECT stok, ambang_minimum FROM items WHERE id = :id AND poli_id = :poli_id');
+                $pdo->beginTransaction();
+                
+                $stmt = $pdo->prepare('SELECT stok, ambang_minimum FROM items WHERE id = :id AND poli_id = :poli_id FOR UPDATE');
                 $stmt->execute([':id' => $id, ':poli_id' => $poli_id]);
                 $row = $stmt->fetch();
 
                 if ($row) {
                     if ($jumlah > (int) $row['stok']) {
+                        $pdo->rollBack();
                         $flashStatus = 'error';
                         $flashMsg = 'Jumlah pemakaian melebihi stok yang tersedia.';
                     } else {
                         $newStok   = max(0, (int) $row['stok'] - $jumlah);
                         $newStatus = $newStok <= (int) $row['ambang_minimum'] ? 'low' : 'available';
                         
-                        $pdo->beginTransaction();
                         // 1. Update stok items
                         $stmt2 = $pdo->prepare('UPDATE items SET stok = :stok, status = :status WHERE id = :id');
                         $stmt2->execute([':stok' => $newStok, ':status' => $newStatus, ':id' => $id]);
                         
                         // 2. Catat ke tabel usage_logs (Fitur Perawat / Log aktivitas)
-                        $stmtLog = $pdo->prepare('INSERT INTO usage_logs (item_id, user_id, jumlah) VALUES (:item_id, :user_id, :jumlah)');
+                        $stmtLog = $pdo->prepare('INSERT INTO usage_logs (item_id, user_id, jumlah, keterangan) VALUES (:item_id, :user_id, :jumlah, :keterangan)');
                         $stmtLog->execute([
                             ':item_id' => $id,
                             ':user_id' => $user['id'],
-                            ':jumlah' => $jumlah
+                            ':jumlah' => $jumlah,
+                            ':keterangan' => $keterangan !== '' ? $keterangan : null
                         ]);
                         
                         $pdo->commit();
                         $flashMsg = 'Pemakaian barang berhasil dicatat.';
                     }
                 } else {
+                    $pdo->rollBack();
                     $flashStatus = 'error';
                     $flashMsg = 'Barang tidak ditemukan.';
                 }
@@ -248,7 +314,13 @@ class ItemController {
             $flashMsg = 'Gagal memproses permintaan. Silakan coba lagi.';
         }
 
-        header('Location: ' . BASE_URL . '/dashboard?' . http_build_query(['status' => $flashStatus, 'msg' => $flashMsg]));
+        $redirectUrl = BASE_URL . '/items';
+        if (!empty($_POST['redirect_to'])) {
+            $redirectUrl = BASE_URL . $_POST['redirect_to'];
+        } elseif (isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], '/dashboard') !== false) {
+            $redirectUrl = BASE_URL . '/dashboard';
+        }
+        header('Location: ' . $redirectUrl . '?' . http_build_query(['status' => $flashStatus, 'msg' => $flashMsg]));
         exit;
     }
 }
