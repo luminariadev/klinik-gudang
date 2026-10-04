@@ -24,9 +24,9 @@ spl_autoload_register(function ($class) {
 
 // Simple Router
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-// Hapus prefix jika di-deploy di subfolder, misal '/stock_gudang'
-$base_path = '/stock_gudang'; // Sesuaikan jika perlu
-if (strpos($uri, $base_path) === 0) {
+// Hapus prefix jika di-deploy di subfolder
+$base_path = defined('BASE_URL') ? rtrim(BASE_URL, '/') : '';
+if (!empty($base_path) && strpos($uri, $base_path) === 0) {
     $uri = substr($uri, strlen($base_path));
 }
 if ($uri == '') $uri = '/';

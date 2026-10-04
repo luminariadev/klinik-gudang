@@ -3,7 +3,7 @@
 -- Gunakan file ini di phpMyAdmin untuk mengupdate struktur tabel
 -- =================================================================
 
-USE stock_gudang;
+USE klinik_gudang_;
 
 -- 1. Tambahkan tabel activity_logs (jika belum ada)
 CREATE TABLE IF NOT EXISTS activity_logs (
@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS activity_logs (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 2. Tambahkan kolom keterangan pada tabel usage_logs (jika belum ada)
--- (Catatan: Jalankan query ini. Jika kolom sudah ada, phpMyAdmin akan mengabaikan atau memberi peringatan ringan)
-ALTER TABLE usage_logs ADD COLUMN IF NOT EXISTS keterangan VARCHAR(255) NULL AFTER jumlah;
+ALTER TABLE usage_logs ADD COLUMN keterangan VARCHAR(255) NULL AFTER jumlah;
 
 -- Selesai! Struktur database Anda sudah yang paling baru.
